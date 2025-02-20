@@ -14,7 +14,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/journal")
 public class JournalEntryController {
-    private Map<ObjectId, JournalEntry> journalEntries = new HashMap<>();
 
     @Autowired
     private JournalEntryService journalEntryService;
