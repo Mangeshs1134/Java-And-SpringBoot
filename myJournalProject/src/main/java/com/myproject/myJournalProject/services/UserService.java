@@ -1,13 +1,11 @@
 package com.myproject.myJournalProject.services;
 
-import com.myproject.myJournalProject.entity.JournalEntry;
 import com.myproject.myJournalProject.entity.User;
 import com.myproject.myJournalProject.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ public class UserService {
     public List<User> getAll(){
         return userRepository.findAll();
     }
-    
+
 
 //  POST - ADD USER
     public void createUser(User user){
@@ -40,6 +38,11 @@ public class UserService {
     public boolean deleteUser(ObjectId userId){
         userRepository.deleteById(userId);
         return true;
+    }
+
+    // Get user
+    public User findByUserName(String username){
+        return userRepository.findByUsername(username);
     }
 
     

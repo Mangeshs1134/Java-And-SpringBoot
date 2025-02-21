@@ -14,8 +14,8 @@ import com.myproject.myJournalProject.services.UserService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -59,7 +59,7 @@ public class UserController {
             userService.createUser(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Already Registered User",HttpStatus.BAD_REQUEST);
         }
     }
     
@@ -72,6 +72,18 @@ public class UserController {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // Put
+    @PutMapping("/update/{username}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String username ){
+        User userInDb = userService.findByUserName(username);
+        if (userInDb!=null) {
+            userInDb.setPassword(user.getPassword());
+            userInDb.setUsername(user.getUsername());
+            userService.createUser(userInDb);
+        }
+        return new ResponseEntity<>(userInDb, HttpStatus.CREATED);
     }
     
     

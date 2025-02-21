@@ -1,7 +1,10 @@
 package com.myproject.myJournalProject.controller;
 
 import com.myproject.myJournalProject.entity.JournalEntry;
+import com.myproject.myJournalProject.entity.User;
 import com.myproject.myJournalProject.services.JournalEntryService;
+import com.myproject.myJournalProject.services.UserService;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +20,22 @@ public class JournalEntryController {
 
     @Autowired
     private JournalEntryService journalEntryService;
-
+    @Autowired
+    private UserService userService;
 
 
 // Get All
-    @GetMapping
-    public List<JournalEntry> getAll(){
-        return journalEntryService.getAll();
-
-
-
-//  Get Through Condition
-    } @GetMapping("/id/{myId}")
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getAllJournalEntriesByUser(@PathVariable String username ){
+    User user = userService.findByUserName(username);
+    List<JournalEntry> list = user.getJournalEntries();
+    return new ResponseEntity<>(list, HttpStatus.OK);
+    
+    
+    
+    //  Get Through Condition
+} @GetMapping("/id/{myId}")
+User user = userService.findByUserName(username);
     public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable ObjectId myId){
          Optional<JournalEntry> journalEntry = journalEntryService.findById(myId);
          return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
@@ -37,10 +44,10 @@ public class JournalEntryController {
 
 
 //    Post Request
-    @PostMapping
-    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry){
+    @PostMapping("/{username}")
+    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry, @PathVariable String username){
         try {
-            journalEntryService.saveEntry(myEntry);
+            journalEntryService.saveEntry(myEntry, username);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -72,4 +79,5 @@ public class JournalEntryController {
         journalEntryService.deleteEntry(myId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    
 }

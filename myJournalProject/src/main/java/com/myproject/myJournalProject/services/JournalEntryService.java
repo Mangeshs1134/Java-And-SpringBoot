@@ -2,6 +2,8 @@ package com.myproject.myJournalProject.services;
 
 import com.myproject.myJournalProject.entity.JournalEntry;
 import com.myproject.myJournalProject.repository.JournalEntryRepository;
+import com.myproject.myJournalProject.repository.UserRepository;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,8 +17,11 @@ public class JournalEntryService {
 
     @Autowired
     private JournalEntryRepository journalEntryRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 // Post
-    public void saveEntry(JournalEntry journalEntry){
+    public void saveEntry(JournalEntry journalEntry, String username){
         journalEntry.setDate(LocalDateTime.now());
         journalEntryRepository.save(journalEntry);
     }
