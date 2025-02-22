@@ -29,13 +29,15 @@ public class JournalEntryController {
     public ResponseEntity<?> getAllJournalEntriesByUser(@PathVariable String username ){
     User user = userService.findByUserName(username);
     List<JournalEntry> list = user.getJournalEntries();
-    return new ResponseEntity<>(list, HttpStatus.OK);
-    
-    
-    
-    //  Get Through Condition
-} @GetMapping("/id/{myId}")
-User user = userService.findByUserName(username);
+    if (list!=null && !list.isEmpty()) {
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+
+
+
+//  Get Through Condition
+    } @GetMapping("/id/{myId}")
     public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable ObjectId myId){
          Optional<JournalEntry> journalEntry = journalEntryService.findById(myId);
          return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
@@ -56,15 +58,15 @@ User user = userService.findByUserName(username);
 
 
 
-//    Put Request
-    @PutMapping("/id/{myId}")
-    public ResponseEntity<?> putEntry(@PathVariable ObjectId myId, @RequestBody JournalEntry myEntry){
+// //    Put Request
+    @PutMapping("/{username}/{myId}")
+    public ResponseEntity<?> putEntry(@PathVariable ObjectId myId, @PathVariable String username, @RequestBody JournalEntry myEntry){
         myEntry.setDate(LocalDateTime.now());
         JournalEntry old = journalEntryService.findById(myId).orElse(null);
         if (old!=null){
             old.setTitle(myEntry.getTitle()!=null && !myEntry.getTitle().equals("") ? myEntry.getTitle() : old.getTitle());
             old.setContent(myEntry.getContent()!=null && !myEntry.getContent().equals("") ? myEntry.getContent() : old.getContent());
-            journalEntryService.saveEntry(old);
+            journalEntryService.saveEntry(old, username);
             return new ResponseEntity<>(old, HttpStatus.CREATED);
         }  
             System.out.println("Here we reached");
@@ -74,9 +76,10 @@ User user = userService.findByUserName(username);
 
 
 //    Delete Request
-    @DeleteMapping("/id/{myId}")
-    public ResponseEntity<?> deleteEntry(@PathVariable ObjectId myId){
-        journalEntryService.deleteEntry(myId);
+    @DeleteMapping("/id/{username}/{myId}")
+    public ResponseEntity<?> deleteEntry(@PathVariable ObjectId myId, @PathVariable String username){
+        System.out.println("Entry");
+        journalEntryService.deleteEntry(myId, username);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     

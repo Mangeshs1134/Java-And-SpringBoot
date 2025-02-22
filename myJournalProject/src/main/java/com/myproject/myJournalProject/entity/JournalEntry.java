@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 // POJO --> plain old java object
 @Document(collection = "journal_entries")
 @Data
+
 public class JournalEntry {
 
     @Id
