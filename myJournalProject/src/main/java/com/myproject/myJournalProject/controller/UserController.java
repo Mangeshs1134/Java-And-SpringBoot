@@ -37,6 +37,11 @@ public class UserController {
     public List<User> getAll() {
         return userService.getAll();
     }
+    // Get users
+    @GetMapping("/test")
+    public String   test() {
+        return "TEST";
+    }
 
     // Get one USER
     @GetMapping("/id/{userId}")
@@ -72,6 +77,7 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody User user){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
         String username = auth.getName();
         User userInDb = userService.findByUserName(username);
         if (userInDb!=null) {

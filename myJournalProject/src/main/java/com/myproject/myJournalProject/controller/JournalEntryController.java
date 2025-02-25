@@ -53,9 +53,9 @@ public class JournalEntryController {
 //    Post Request
     @PostMapping
     public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry){
+        System.out.println("POST REQ------------------------------------------------");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        System.out.println("POST REQ");
         try {
             journalEntryService.saveEntry(myEntry, username);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
