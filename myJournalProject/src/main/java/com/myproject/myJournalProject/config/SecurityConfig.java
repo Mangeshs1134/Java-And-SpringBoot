@@ -24,15 +24,9 @@ public class SecurityConfig {
         this.userSecurityService = userSecurityService;
     }
 
-    // @Bean
-    // public PasswordEncoder passwordEncoder(){
-    //     return new BCryptPasswordEncoder();
-    // }
-
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        System.out.println("------------------------------------------------------------------------------------------------------------------------- name------------------------------------------------------------------------------------------------------------------------------------------------");
         http
             .csrf(csrf-> csrf.disable())
             .authorizeHttpRequests(auth -> auth
@@ -41,13 +35,14 @@ public class SecurityConfig {
                 )
             .httpBasic(httpBasic-> {}); // Enable basic auth
             return http.build();
-    }
+        }
+        
+        @Bean
+        public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder){
+            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+            authProvider.setUserDetailsService(userDetailsService);
+            authProvider.setPasswordEncoder(passwordEncoder);
+            return new ProviderManager(authProvider);
+        }
     
-    // @Bean
-    // public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder){
-    //     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    //     authProvider.setUserDetailsService(userDetailsService);
-    //     authProvider.setPasswordEncoder(passwordEncoder);
-    //     return new ProviderManager(authProvider);
-    // }
 }

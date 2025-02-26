@@ -36,8 +36,16 @@ public class UserService {
     
     //  CREATE NEW USER
     public void createUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!user.getPassword().startsWith("$2a$")) {  // Check if already hashed
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         user.setRoles(Arrays.asList("USER"));
+        userRepository.save(user);
+    }
+    public void updateUser(User user){
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // user.setRoles(Arrays.asList("USER"));
         userRepository.save(user);
     }
 

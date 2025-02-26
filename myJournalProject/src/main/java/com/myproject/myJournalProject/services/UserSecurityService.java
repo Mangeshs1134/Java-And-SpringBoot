@@ -27,17 +27,7 @@ public class UserSecurityService implements UserDetailsService {
     public UserSecurityService(UserRepository userRepository , @Lazy PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        // // initializing users list inside constructor
-        // this.users = List.of(
-        // User.withUsername("user")
-        //     .password(passwordEncoder.encode("password"))
-        //     .roles("USER")
-        //     .build(),
-        // User.withUsername("admin")
-        //     .password(passwordEncoder.encode("admin"))
-        //     .roles("ADMIN")
-        //     .build()
-    // );
+
     }
 
     @Override
@@ -45,12 +35,14 @@ public class UserSecurityService implements UserDetailsService {
         System.out.println("-------------------------------------------------------------------------------------------------------------------------load user name------------------------------------------------------------------------------------------------------------------------------------------------" + username + "---" );
         Optional <User> userOpt = Optional.of(userRepository.findByUsername(username));
        if (userOpt.isEmpty()) {
-           throw new UsernameNotFoundException("User not Found");
-        }
-        System.out.println("---------------------------------------------------------------------------------------------------------------------------Empty-----------------------------------------------------------------------------------------------------------------------");
+            
+            throw new UsernameNotFoundException("User not Found");
+       }
        User user = userOpt.get();
-
-       return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
+       System.out.println(user.getUsername() +  "------------------------------------"+ user.getPassword());
+       return org.springframework.security.core.userdetails.User
+                .builder()
+                .username(user.getUsername())
                 .password(user.getPassword())
                 .roles(user.getRoles().toArray(new String[0]))
                 .build();
