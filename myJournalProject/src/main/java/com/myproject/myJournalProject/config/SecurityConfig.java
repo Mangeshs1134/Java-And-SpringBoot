@@ -30,8 +30,11 @@ public class SecurityConfig {
         http
             .csrf(csrf-> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/public/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/users/**", "/journal/**").authenticated()
+                .requestMatchers("/admin/**" ).hasRole("ADMIN")
+                // .requestMatchers("/admin/**" ).hasAnyRole("ADMIN")
+                // .requestMatchers("/admin/**" ).hasAnyAuthority("ROLE_ADMIN") //this can also work 
+                .anyRequest().permitAll()
                 )
             .httpBasic(httpBasic-> {}); // Enable basic auth
             return http.build();

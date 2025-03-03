@@ -36,4 +36,5 @@ public class PublicController {
             return new ResponseEntity<>("Already Registered User",HttpStatus.BAD_REQUEST);
         }
     }
+ 
 }

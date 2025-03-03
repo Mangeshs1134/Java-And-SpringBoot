@@ -9,6 +9,8 @@ import java.util.Optional;
 
 
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,8 @@ public class UserService {
     
     @Autowired
     private UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(JournalEntryService.class);
 
     
 // Get
@@ -41,6 +45,16 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         user.setRoles(Arrays.asList("USER"));
+        userRepository.save(user);
+    }
+    
+    //  CREATE NEW Admin
+    public void createAdmin(User user){
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!user.getPassword().startsWith("$2a$")) {  // Check if already hashed
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        user.setRoles(Arrays.asList("USER", "ADMIN"));
         userRepository.save(user);
     }
     public void updateUser(User user){

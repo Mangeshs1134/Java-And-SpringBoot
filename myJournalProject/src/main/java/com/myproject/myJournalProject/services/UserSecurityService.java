@@ -32,7 +32,7 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------load user name------------------------------------------------------------------------------------------------------------------------------------------------" + username + "---" );
+        
         Optional <User> userOpt = Optional.of(userRepository.findByUsername(username));
        if (userOpt.isEmpty()) {
             
@@ -44,7 +44,7 @@ public class UserSecurityService implements UserDetailsService {
                 .builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                // .roles(user.getRoles().toArray(new String[0]))
+                .roles(user.getRoles().toArray(new String[0]))
                 .build();
 
 

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -108,9 +109,9 @@ public ResponseEntity<?> getJournalEntryById(@PathVariable ObjectId myId){
         User user = userService.findByUserName(username);
         System.out.println("user" + user);
         List <JournalEntry> collect = user.getJournalEntries().stream().filter(x-> x.getId().equals(myId)).collect(Collectors.toList());
-        System.out.println("collect" + collect);
-        // List <JournalEntry> collect = user.getJournalEntries().stream().filter(x-> x.getId().equals(myId)).collect(Collectors.toList());
+        System.out.println("collected is ---> " + collect);
         if (!collect.isEmpty()) {
+
             journalEntryService.deleteEntry(myId, username);
             return new ResponseEntity<>("Deleted",HttpStatus.ACCEPTED);
         }
