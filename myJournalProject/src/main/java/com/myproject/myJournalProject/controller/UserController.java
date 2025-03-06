@@ -10,8 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.myJournalProject.api_response.WeatherResponse;
 import com.myproject.myJournalProject.entity.User;
 import com.myproject.myJournalProject.services.UserService;
+import com.myproject.myJournalProject.services.WeatherService;
+
 import org.springframework.security.core.Authentication;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,10 +34,13 @@ public class UserController {
     private UserService userService;
 //    auto converted to JSON
 
+    @Autowired
+    private WeatherService weatherService;
+
 
     // Get users
-    @GetMapping
-    public List<User> getAll() {
+    @GetMapping("/all-users")
+    public List<User> getAllUser() {
         return userService.getAll();
     }
     // Get users
@@ -44,12 +50,22 @@ public class UserController {
     }
 
     // Get one USER
-    @GetMapping("/id/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable ObjectId userId){
-        System.out.println(userService.findUser(userId));
-        if (userService.findUser(userId)!=null) {
+    @GetMapping
+    public ResponseEntity<?> getUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth!=null) {
             try {
-                return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
+                String gretting;
+                WeatherResponse response = weatherService.getWeather("Mumbai");
+                if (response!=null) {
+                    gretting = " Today weather feels like " + response.getCurrent().getFeelslike();
+                    
+                }
+                else{
+                    gretting = "Failed to fetch weather";
+
+                }
+                return new ResponseEntity<>("Hi " + auth.getName() + gretting + " THANK YOU     ******----*******" , HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

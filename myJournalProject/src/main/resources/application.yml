@@ -14,11 +14,17 @@ spring:
   main:
     allow-circular-references: true
 
-logging:
-  level:
-    org:
-    # process id -- thread info -- package -- log {SYNTAX OF LOGGING}
-      springframework:
-        web: DEBUG
-        security: DEBUG
+# logging:
+#   level:
+#     root: ERROR
+#     com:
+#       myproject:
+#         myJournalProject:
+#           services:
+#             UserService: ERROR
+#     org:
+#       springframework:
+#         web: DEBUG
+#         security: DEBUG
+#     # process id -- thread info -- package -- log {SYNTAX OF LOGGING}
 
