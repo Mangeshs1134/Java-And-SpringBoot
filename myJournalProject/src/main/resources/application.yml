@@ -14,6 +14,10 @@ spring:
   main:
     allow-circular-references: true
 
+weather:
+  api:
+    Key: 90e812b9afcf7e47415ec15d0613255f
+
 # logging:
 #   level:
 #     root: ERROR

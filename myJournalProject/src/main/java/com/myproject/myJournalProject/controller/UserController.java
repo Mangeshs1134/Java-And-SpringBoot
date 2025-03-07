@@ -20,8 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -56,18 +54,23 @@ public class UserController {
         if (auth!=null) {
             try {
                 String gretting;
-                WeatherResponse response = weatherService.getWeather("Mumbai");
+                String city = "Delhi";
+                System.out.println("line 1 passed");
+                WeatherResponse response = weatherService.getWeather(city);
+                System.out.println("line 2 passed");
                 if (response!=null) {
-                    gretting = " Today weather feels like " + response.getCurrent().getFeelslike();
+                    gretting = " from " + city + " - - Today weather feels like " + response.getCurrent().getFeelslike();
                     
+                    System.out.println("line 3 passed");
                 }
                 else{
-                    gretting = "Failed to fetch weather";
+                    gretting = " Failed to fetch weather";
 
                 }
                 return new ResponseEntity<>("Hi " + auth.getName() + gretting + " THANK YOU     ******----*******" , HttpStatus.OK);
+
             } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Catch Called, Try Failed for User Get.", HttpStatus.NOT_FOUND);
             }
         }else{
             return new ResponseEntity<>("User not Found",HttpStatus.NOT_FOUND);
