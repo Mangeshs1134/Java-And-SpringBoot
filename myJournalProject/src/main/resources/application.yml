@@ -14,9 +14,54 @@ spring:
   main:
     allow-circular-references: true
 
+  mail:
+    host: smtp.google.com
+    port: 587
+    username: mangeshs1134@gmail.com
+    password: geujhonfkzgobmmh
+    properties:
+      mail: 
+        smtp:
+          auth: true
+          starttls: 
+            enable: true
+
 weather:
   api:
     Key: 90e812b9afcf7e47415ec15d0613255f
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # logging:
 #   level:
