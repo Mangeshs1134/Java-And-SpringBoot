@@ -2,29 +2,33 @@ package com.myproject.myJournalProject.Implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Service;
+
 import org.springframework.mail.javamail.JavaMailSender;
 
 import com.myproject.myJournalProject.entity.EmailEntity;
 import com.myproject.myJournalProject.services.EmailService;
 
-import lombok.Value;
 
+@Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-    private String sender = "mangeshs1134@gmail.com";
+    private final JavaMailSender javaMailSender;
+
+    public EmailServiceImpl(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     // for simple text mail
+    @Override
     public String simpleMail(EmailEntity emailEntity){
         try {
-
+            
             SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setFrom(sender);
             mail.setTo(emailEntity.getTo());
             mail.setText(emailEntity.getMsgBody());
             mail.setSubject(emailEntity.getSubject());
-
+            
             javaMailSender.send(mail);
             return "mail sent";
             
@@ -33,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
             return "mail not sent";
         }
     }
+    @Override
     public String attachmentMail(EmailEntity emailEntity){
         return "mail sent";
     }

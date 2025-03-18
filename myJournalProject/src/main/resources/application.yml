@@ -15,16 +15,18 @@ spring:
     allow-circular-references: true
 
   mail:
-    host: smtp.google.com
+    host: smtp.gmail.com
     port: 587
     username: mangeshs1134@gmail.com
-    password: geujhonfkzgobmmh
+    password: rkajipyjwynbvfhd
     properties:
-      mail: 
+      mail:
         smtp:
           auth: true
-          starttls: 
+          starttls:
             enable: true
+
+
 
 weather:
   api:
@@ -75,5 +77,5 @@ weather:
 #       springframework:
 #         web: DEBUG
 #         security: DEBUG
-#     # process id -- thread info -- package -- log {SYNTAX OF LOGGING}
+    # process id -- thread info -- package -- log {SYNTAX OF LOGGING}
 
