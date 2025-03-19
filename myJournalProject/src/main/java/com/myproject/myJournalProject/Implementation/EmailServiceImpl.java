@@ -25,6 +25,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             
             SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setFrom("mangeshs1134@gmail.com");
             mail.setTo(emailEntity.getTo());
             mail.setText(emailEntity.getMsgBody());
             mail.setSubject(emailEntity.getSubject());
@@ -33,8 +34,9 @@ public class EmailServiceImpl implements EmailService {
             return "mail sent";
             
         } catch (Exception e) {
-            // throw new RuntimeException("Exception occurred while sending text mail", e);
+//             throw new RuntimeException("Exception occurred while sending text mail", e);
             return "mail not sent";
+//            return e;
         }
     }
     @Override

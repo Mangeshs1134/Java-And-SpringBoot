@@ -6,6 +6,7 @@ spring:
   application:
     name: myJournalProject
 
+
   data:
     mongodb:
       auto-index-creation: true
@@ -18,13 +19,14 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: mangeshs1134@gmail.com
-    password: rkajipyjwynbvfhd
+    password: rkaj ipyj wynb vfhd
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+            required: true
 
 
 
