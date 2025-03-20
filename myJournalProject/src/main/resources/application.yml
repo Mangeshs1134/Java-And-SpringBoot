@@ -5,7 +5,9 @@ spring:
     # active: prod
   application:
     name: myJournalProject
-
+  redis:
+    host: localhost
+    port: 6379
 
   data:
     mongodb:

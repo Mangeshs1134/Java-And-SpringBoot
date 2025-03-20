@@ -23,23 +23,26 @@ public class WeatherService {
 
     @Autowired
     private AppCache appCache;
+
+    @Autowired
+    private RedisService redisService;
     
 
     public WeatherResponse getWeather(String city){
 
         // String finalApi = apiAddrees.replace("city", city).replace("API_KEY", apiKey);
+        WeatherResponse weatherResponse = redisService.get("weather_of_"+city, WeatherResponse.class);
+        if (weatherResponse!=null){
+            return weatherResponse;
+        }else{
+            String finalApi = appCache.APP_CACHE.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace("<API_KEY>", apiKey);
+            ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.GET, null, WeatherResponse.class);
+            WeatherResponse body = response.getBody();
+            if (body!=null){
+                redisService.set("weather_of_"+city, body, 5l);
+            }
+            return body;
+        }
 
-        System.out.println("line w1 passed");
-        System.out.println(appCache.APP_CACHE);
-        System.out.println(appCache.APP_CACHE.get("apiKey"));
-        
-        String finalApi = appCache.APP_CACHE.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace("<API_KEY>", apiKey);
-
-        System.out.println("line w2 passed");
-        ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.GET, null, WeatherResponse.class);
-        System.out.println("line w3 passed");
-        WeatherResponse body = response.getBody();
-        System.out.println("line w4 passed");
-        return body;
     }
 }
